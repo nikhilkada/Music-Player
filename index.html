@@ -1,69 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Player</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="Icon" href="./full stack.jpg">
-    <script src="https://kit.fontawesome.com/feedb56fe9.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Music Player</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="Icon" href="./full stack.jpg" />
+  <script src="https://kit.fontawesome.com/feedb56fe9.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <div class="container">
-        <div class="music-player">
-            <nav>
-                <div class="circle">
-                    <i class="fa-solid fa-angle-left"></i>
-                </div>
-                <div class="circle">
-                    <i class="fa-solid fa-bars"></i>
-                </div>
-            </nav>
-            <img src="Songimage.png.jpeg" class="song-img">
-            <h1>Umgaya bap ra..</h1>
-            <p>Ajay Gogavale,Guru Thakur</p>
-
-            <audio controls id="song">
-                <source src="Umagayabapra.mp3.mp4" type="audio/mpeg">
-            </audio>
-            <input type="range" value="0" id="progress">
-
-            <div class="controls">
-                <div><i class="fa-solid fa-backward"></i></div>
-                <div onclick="playpause()"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
-                <div><i class="fa-solid fa-forward"></i></div>
-            </div>
-
+  <div class="container">
+    <div class="music-player">
+      <nav>
+        <div class="circle">
+          <i class="fa-solid fa-angle-left"></i>
         </div>
+        <div class="circle">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+      </nav>
+
+      <img src="Songimage.png.jpeg" class="song-img" />
+      <h1>Umgaya bap ra..</h1>
+      <p>Ajay Gogavale, Guru Thakur</p>
+
+      <!-- Remove controls to use custom buttons -->
+      <audio id="song">
+        <source src="Umagayabapra.mp3.mp4" type="audio/mpeg" />
+      </audio>
+      <input type="range" value="0" id="progress" />
+
+      <div class="controls">
+        <div><i class="fa-solid fa-backward"></i></div>
+        <div onclick="playpause()">
+          <i class="fa-solid fa-play" id="ctrlIcon"></i>
+        </div>
+        <div><i class="fa-solid fa-forward"></i></div>
+      </div>
     </div>
+  </div>
 
-    <script>
+  <script>
+    let progress = document.getElementById("progress");
+    let song = document.getElementById("song");
+    let ctrlIcon = document.getElementById("ctrlIcon");
 
-        let progress = document.getElementById("progress");
-        let song = document.getElementById("song");
-        let ctrlIcon = document.getElementById("ctrlIcon");
+    // Set progress bar max and initial value
+    song.onloadedmetadata = function () {
+      progress.max = song.duration;
+      progress.value = song.currentTime;
+    };
 
+    // Update progress as song plays
+    song.ontimeupdate = function () {
+      progress.value = song.currentTime;
+    };
 
-        song.onloadedmetadata = function () {
-            progress.max = song.duration;
-            progress.value = song.currentTime;
-        }
+    // Allow user to scrub the progress bar
+    progress.oninput = function () {
+      song.currentTime = progress.value;
+    };
 
-        function playpause() {
-            if (ctrlIcon.classList.contains("fa-pause")) {
-                song.pause();
-                ctrlIcon.classList.remove("fa-pause");
-                ctrlIcon.classList.add("fa-paly");
-            }
-            else {
-                song.play();
-                ctrlIcon.classList.add("fa-pause");
-                ctrlIcon.classList.remove("fa-paly");
-            }
-        }
-    </script>
+    function playpause() {
+      if (song.paused) {
+        song.play();
+        ctrlIcon.classList.remove("fa-play");
+        ctrlIcon.classList.add("fa-pause");
+      } else {
+        song.pause();
+        ctrlIcon.classList.remove("fa-pause");
+        ctrlIcon.classList.add("fa-play");
+      }
+    }
+  </script>
 </body>
-
 </html>
